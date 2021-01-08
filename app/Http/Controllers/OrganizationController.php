@@ -28,13 +28,21 @@ class OrganizationController extends Controller
         // Validation
         $this->validate($request,[
             "name"=>"required",
-            "email"=>"required",
+            "email"=>"required|unique:organizations",
             "phone"=>"required",
             "city"=>"required"
         ]);
         // Insert to database
-        $organ=Organization::create($request->all());
-        return response()->json($organ, 201);
+        $g=new Organization();
+        $g->name=$request->input('name');
+        $g->email=$request->input('email');
+        $g->phone=$request->input('phone');
+        $g->city=$request->input('city');
+        $g->website=$request->input('website');
+        $g->save();
+
+      //  $organ=Organization::create($request->all());
+        return response()->json($g, 201);
     }
     public function update($id, Request $request){
         // Validation
@@ -65,7 +73,8 @@ class OrganizationController extends Controller
             "description"=>$request->input("description"),
             "coverImage"=>$request->input("coverImage")
         ]);
-        return response($organ, 200);
+
+        return response(Organization::with('services')->find($organization_id), 200);
 
     }
     public function deleteService($id){

@@ -16,7 +16,8 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
-$router->group(['prefix'=>'api'], function($router){
+$router->group(['prefix'=>'zoe'], function($router){
+    $router->get("test", "TestController@test");
     //organizations
     $router->get('organizations','OrganizationController@showAllComapny');
     $router->get('organization/{id}','OrganizationController@getCompany');
